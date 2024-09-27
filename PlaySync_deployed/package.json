@@ -1,0 +1,32 @@
+{
+  "name": "playsync",
+  "version": "1.0.0",
+  "description": "PlaySync app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arnadev/playsync.git"
+  },
+  "author": "Arnav Challa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/arnadev/playsync/issues"
+  },
+  "homepage": "https://github.com/arnadev/playsync#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.6.3",
+    "multer": "^1.4.5-lts.1",
+    "nanoid": "^3.3.4",
+    "uuid": "^10.0.0"
+  }
+}

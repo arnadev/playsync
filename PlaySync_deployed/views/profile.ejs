@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="/css/profile.css">
+</head>
+<body>
+    <div id="alert-message" class="alert-class"></div>
+
+    <div class="container">
+
+        <% if (isOwner) { %>
+            <div id="pfp-form">
+                <form action="/user/pfp" method="POST" enctype="multipart/form-data">
+                    <input type="file" id="profile-pic-input" name="pfp" accept="image/*" required>
+                    <button type="submit" id="upload-pic-btn">Upload</button>
+                </form>
+                <img id="del-pic-btn" src="/media/delete-icon.png" alt="Delete Profile Picture">
+            </div>
+        <% } %>
+
+        <div class="header">
+            <h1><%= profileData.nickname %></h1>
+        </div>
+        <div class="profile-pic-container">
+
+        <img class="profile-pic" src="<%= profilePictureUrl %>" alt="Profile Picture">
+        <% if (isOwner) { %>
+            <img id="edit-pic-btn" src="/media/edit-icon.png" alt="Edit Profile Picture">
+        <% } %>
+        </div>
+
+        <form id="profileForm" method="POST" action="/user/profile">
+            <table class="profile-table">
+                <tr>
+                <tr>
+                    <td>Bio</td>
+                    <td><textarea id="bioTextarea" name="bio" readonly><%= profileData.bio %></textarea></td>
+                </tr>
+                    <td>Username</td>
+                    <td><input type="text" id="username" name="username" value="<%= username %>" readonly></td>
+                </tr>
+                <tr>
+                    <td>Email</td>
+                    <td><input type="text" id="email" name="email" value="<%= email %>" readonly></td>
+                </tr>
+                <tr>
+                    <td>Nickname</td>
+                    <td><input type="text" id="nickname" name="nickname" value="<%= profileData.nickname %>" readonly></td>
+                </tr>
+                <tr>
+                    <td>Age</td>
+                    <td><input type="number" id="age" name="age" value="<%= profileData.age %>" readonly></td>
+                </tr>
+                <tr>
+                    <td>Gender</td>
+                    <td>
+                        <div id="gender-radios-div">
+                            <input type="radio" id="gender-male" class="gender-radios" name="gender" value="Male" required <% if (profileData.gender=='Male') { %>checked<% } %> disabled>
+                            <label for="gender-male">Male</label>
+                          
+                            <input type="radio" id="gender-female" class="gender-radios" name="gender" value="Female" required <% if (profileData.gender=='Female') { %>checked<% } %> disabled>
+                            <label for="gender-female">Female</label>
+                          
+                            <input type="radio" id="gender-other" class="gender-radios" name="gender" value="Other" required <% if (profileData.gender=='Other') { %>checked<% } %> disabled>
+                            <label for="gender-other">Other</label>
+                          </div>
+                    </td>
+                </tr>
+
+            </table>
+            <% if (isOwner) { %>
+                <button type="button" class="btn" id="editBtn">Edit</button>
+            <% } %>
+            <% if (!isOwner && friendStatus=='notFriend') { %>
+                <button type="button" class="btn" id="add-friend-Btn">Send Friend Request</button>
+            <% } %>
+            <%  if (!isOwner && friendStatus=='requestSent') { %>
+                <button type="button" class="btn" id="unsend-request-Btn">Unsend Friend Request</button>
+            <% } %>
+            <%  if (!isOwner && friendStatus=='friend') { %>
+                <button type="button" class="btn" id="remove-friend-Btn">Remove Friend</button>
+            <% } %>
+            <%  if (!isOwner && friendStatus=='requestReceived') { %>
+                <button type="button" class="btn" id="accept-friend-Btn">Accept Friend Request</button>
+            <% } %>
+        </form>
+        <a href="/home"><button class="btn" id="home-btn">Home</button></a>
+    </div>
+    <!-- <script>
+        const loggedInUsername = "<%= username %>"; // Pass the logged-in username from the backend
+        const urlPath = window.location.pathname; // Get the current URL path
+      
+        if (urlPath.startsWith('/profile/') && urlPath.split('/')[2] === loggedInUsername) {
+          window.location.href = '/profile'; // Redirect to your own profile
+        }
+    </script> -->
+    <script src="/js/profile.js"></script>
+    
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link rel="stylesheet" href="/css/signup.css">
+</head>
+<body>
+    <div>
+        <img src="/media/logo.png" alt="PlaySync logo" class="logo">
+    </div>
+
+    <div class="container">
+        <h1>Signup</h1>
+        <form method="POST" action="/user/signup">
+            <div class="form-group data1">
+                <label for="username">Full Name</label>
+                <input type="text" id="username" name="username" required placeholder="Your username...">
+            </div>
+            <div class="form-group data1">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Your Email...">
+            </div>
+            <div class="form-group data1">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Your Password...">
+            </div>
+
+            <button type="button" class="btn data1" id="next-btn">Next</button>
+
+            <button type="button" class="btn data2" id="back-btn">Back</button>
+            <br>
+            <div class="form-group data2">
+                <label for="nickname">Nickname</label>
+                <input type="text" id="nickname" name="nickname" required placeholder="Your nickname...">
+            </div>
+            <br>
+            <div class="form-group data2">
+                <label for="age">Age</label>
+                <input type="number" id="age" name="age" required placeholder="Your age...">
+            </div>
+            <br>
+            <div class="form-group data2">
+                <label for="gender">Gender</label>    
+                <div id="gender-radios-div">
+                <input type="radio" id="gender-male" class="gender-radios" name="gender" value="Male" required>
+                <label for="gender-male">Male</label>
+                
+                <input type="radio" id="gender-female" class="gender-radios" name="gender" value="Female" required>
+                <label for="gender-female">Female</label>
+                
+                <input type="radio" id="gender-other" class="gender-radios" name="gender" value="Other" required>
+                <label for="gender-other">Other</label>
+                </div>
+            </div>
+            <br>
+            <button type="submit" class="btn data2">Sign Up!</button>
+            <% if (locals.err) { %>
+                <p class="error"><%= err %></p>
+            <% } %>
+        </form>
+        <br>
+        <a href="/login">Login</a>
+    </div>
+    <script src="/js/signup.js"></script>
+</body>
+</html>
