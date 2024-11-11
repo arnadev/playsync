@@ -1,0 +1,752 @@
+##### NODEJS BASICS #####
+
+
+
+>>>>>WHAT IS NODEJS: Node is a runtime environment for JS (it combines js with c++ to interact with machine)
+
+-To run script.js using nodejs > node script.js
+
+-npm is an important tool to install and manage packages in node
+
+-NPM: npm init to initialise package.json (containing info about packages and scripts)
+
+-we can add scripts in package.json as
+
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1", <--default test script
+    "start": "node script.js" <--my script
+  },
+
+-execute using nom <scriptname>
+
+
+
+>>>>>IMPORTING AND EXPORTING ACROSS FILES
+
+>IMPORTS: In the file using the function we need to use require keyword, example: const math=require('./math.js') and call function as math.add etc
+
+>EXPORTS: 
+
+--method 1
+
+-we can do module.exports=<function name> //but this only works for one function, if we do it again it will overwrite
+
+-instead we can do module.exports={ } i.e use an objext
+
+-here in the object, we can simply do {<f1>,<f2>,...so on} so they are exported with their existing name
+
+-we can also do {func1: <f1>,func2<f2>,...so on} so they are exported and acessible via the new name (so func1 stores the vuntion f1, and so on)
+
+--method 2
+
+-we can do exports.funcname=(parameters)=>{actual function} i.e we can export and anynomyous arrow function using exports object
+
+-use method1 to export all at once(cleaner), use method2 to export as you write
+
+
+
+
+>>>>>EVENT LOOP IN JS
+
+-Nodejs is based on the V8 JavaScript engine (chromium), which operates in a single thread.
+This means that only one operation can be executed at a time in the main execution thread.
+However, Node.js uses the event loop to handle I/O operations asynchronously,
+so the main thread is not blocked by tasks like reading files or making network requests.
+
+Flow of the Event Loop (Interaction of Stack and Queue)
+-Call Stack: Node.js starts executing the synchronous code. Functions are pushed onto the stack and executed.
+-Async Operations: When an asynchronous operation (e.g., setTimeout, fs.readFile) is encountered, Node.js registers the task and moves on without waiting for the result. This asynchronous operation is handled by Node.js's underlying system (libuv in most cases) or the browser (for front-end JavaScript).
+-Completion of Async Operation: Once the asynchronous task is complete, its callback is placed in the callback queue.
+-Event Loop Check: The event loop constantly checks the call stack. If the stack is empty, it pulls the next callback from the callback queue and places it onto the call stack for execution.
+-Callback Execution: The callback function from the queue gets executed and then popped off the call stack once complete.
+-Repeat: The event loop repeats this process continuously, pulling from the queue when the stack is empty.
+
+
+
+>>>>>FILE FANDLING
+
+-we need to do>require('fs) to use the fs (file system) module
+
+-fs.writeFileSync('./test.txt','arnav challa here') > creates a file if it doesn't exist with the file name test.txt>writes the text specified synchronously
+
+-fs.writeFile('./test.txt','arnav challa hereee',(err)=>{}) > it does the same but asyncronously, we must specify a callback for errors
+
+-fs.readFileSync('./test.txt','utf-8') > it reads the file and returns the contents synchronously (let result=fs.readFileSync.....) > utf-8 specifies format
+
+-fs.readFile('./test.txt','utf-8',(err,result)=>{
+    if(err){
+        console.log('ERROR!!!!!'+err);
+    }
+    else{
+        console.log(result);
+    }
+}) >we need to provide a callback for asyncronous read, with error argument and another argument for result (callback is executed for error or after reading is done)
+
+-fs.appendFileSync('./test.txt','aaaa') > appends data to the file synchronously
+
+-fs.appendFile('./test.txt','aaaa',(err)=>{}); >for asyncronous we need to provide a callback for errors
+
+-NOTE: all operations have a synchronous and asyncronous version, prefer asyncronous when possible as it is faster
+
+-fs.cpSync('./test.txt','./copy.txt') to copy one txt file to another (creates if it doesn't exist)
+
+-fs.cpSync('./folder1','./folder2',{recursive: true}) to copy a folder (creates if it doesn't exist)
+
+-fs.mkdirSync('./folder2/folder3',{recursive: true}) to make a folder/path of folders (to create a path of folders we set recursive to true)
+
+-fs.rmdirSync('./folder3') to remove an empty directory (rmdir with recursive to remove non-empty is depricated)
+
+-fs.rmSync('./ftest.txt') to remove a file
+
+-fs.rmSync('./folder1',{recursive: true}) to remove a folder along with the files in it
+
+-fs.statSync('./test.txt').size > returns size > stat can be used to get info about the file such as length
+
+
+
+>>>>>HTTP METHODS:
+
+-GET: Retrieves data from the server. 
+-POST: Sends data to the server to create a new resource. (data is sent without id, resource is created, duplication allowed)
+-PUT: Replaces an existing resource with new data. (data is sent with id, if it exists, replace complemetely, else create new with specified id)
+-PATCH: Partially updates an existing resource. (partial data is sent with id, if it exists, it is partially replaced)
+-DELETE: Removes a resource from the server.
+
+>>>>>HTTP server using nodejs (basic)
+
+-create index.js which acts as our entry point
+
+-const http=require('http')
+
+-we need to create a handler function that handles the various urls and http methods 
+
+-const myServer=http.createServer(myHandler) to create server object
+
+-myServer.listen(8000,()=>{
+    console.log('server is up and running!');
+})
+
+EXAMPLE: 
+
+const http=require('http');
+const fs=require('fs');
+const url=require('url');
+
+const myHandler=(req,res)=>{
+    if(req.url==='/favicon.ico') return res.end();
+    const log=`${new Date().getTime()}: ${req.method} ${req.url} new req recieved\n`;
+    const myUrl=url.parse(req.url,true);
+    console.log(myUrl);
+    fs.appendFile('log.txt',log,(err)=>{
+        if(err) throw err;
+        switch(myUrl.pathname){
+            case '/':
+                if(req.method==='GET')
+                res.end('HOMEPAGE');
+                break;
+
+            case '/about':
+                const username=myUrl.query.name;
+                res.end(`HELLO, ${username}`);
+                break;
+            case '/signup':
+                if(req.method==='GET')
+                    res.end('THIS IS A SIGN UP FORM');
+                else if(req.method=='POST')
+                {
+                    //db query
+                    res.end('SUCCESS');
+                }
+
+            default:
+                res.end('404 NOT FOUND');
+                break;
+        }
+
+    });
+
+}
+const myServer=http.createServer(myHandler);
+myServer.listen(8000,()=>{
+    console.log('server is up and running!');
+})
+
+
+
+
+>>>>>HTTP server using Express
+
+-express gives us abstraction for handles and creeation of server
+
+EXAMPLE:
+
+const express=require('express');
+const app=express(); //app is basically the handler function for Server
+
+app.get('/',(req,res)=>{
+    return res.send('homepage: '+req.query);
+})
+app.get('/about',(req,res)=>{
+    let allQueries=Object.values(req.query).join(' ');
+    return res.send('aboutpage: '+allQueries);
+})
+
+app.post('/signup',(req,res)=>{
+    //db query
+    return res.send('signed up success');
+})
+
+app.listen(8000,()=>{
+    console.log('server is up and running!');
+}) //app.listen handles creation and listening of server
+
+
+
+
+
+>>>>>REST APIs
+
+A RESTful API (Representational State Transfer) is an architectural style for designing networked applications.
+It uses standard HTTP methods (GET, POST, PUT, PATCH, DELETE) to enable communication between a client and a server, typically over the web.
+A RESTful API is stateless, meaning each request from the client to the server must contain all the information the server needs to fulfill that request,
+and the server doesn't store any session data.
+
+Key Principles of a RESTful API:
+-Stateless: Each request is independent, and the server doesn’t store client state between requests.
+-Client-Server: The client (frontend) and server (backend) are separate, and they communicate over HTTP(req,res).
+-Resource-Based: Resources, such as data (e.g., users, posts), are identified by URLs (Uniform Resource Locators).
+-Uniform Interface: The same HTTP methods and standards are used across the API, making it easy to understand and use.
+-Use of HTTP Methods appropriately
+
+-Example:
+-A RESTful API for a blog might have endpoints like:
+
+GET /posts - Retrieve a list of blog posts.
+POST /posts - Create a new blog post.
+GET /posts/id - Retrieve a specific blog post by ID.
+PATCH /posts/id - Update part of the blog post.
+PUT /posts/id - If blogpost with id exists, replace it with new one, else create one with the specified id and data
+DELETE /posts/id - Delete a specific blog post.
+
+
+
+
+
+>>>>>KEY POINTS FOR REST API DEMO:
+
+-const users=require('./MOCK_DATA.json'); to import mock data json
+
+-if we want hybrid do /path for html/rendered and /api/path for only data (in CSR we only return data never html)
+
+-if we have multiple http requests with same path, we can club them together using app.route
+
+-example: app.get('/users/:id',...) & app.patch('/users/:id,...') & app.delete('/users/:id',...) => app.route('/users/:id').get(...).patch(...).delete(...)
+
+-create middleware via app.use
+
+-app.use(express.urlencoded({extended: false})); this middleware helps us handle urlencoded data, extended is false as we are using simple key value pairs
+
+-if we were using json for post and patch, we would do > app.use(express.json());
+
+-to modify json, use findIndex, and splice for deletion, although we will move on to mongoDB later which gives further abstraction
+
+
+
+
+>>>>>MIDDLEWARE
+
+
+Middleware functions are functions that have access to the request object (req), the response object (res),
+and the next middleware function in the application’s request-response cycle. The next middleware function is commonly denoted by a variable named next.
+
+Middleware functions can perform the following tasks:
+-Execute any code.
+-Make changes to the request and the response objects.
+-End the request-response cycle.
+-Call the next middleware function in the stack.
+-If the current middleware function does not end the request-response cycle, it must call next() to pass control to the next middleware function.
+ Otherwise, the request will be left hanging.
+
+example:
+app.use((req, res, next) => {
+  console.log('Middleware running');
+  next(); // Passes control to the next middleware or route handler, essential to move to next step
+});
+
+
+
+
+
+>>>>>HEADERS
+
+Headers in HTTP are key-value pairs sent with an API request or response. 
+They provide metadata about the request or response, such as the type of data being sent (Content-Type), authentication info (Authorization),
+or information about the client (User-Agent).
+
+Example:
+-Request Header: Authorization: Bearer <token>
+-Response Header: Content-Type: application/json
+Headers help define how the client and server communicate.
+
+-res.setHeader('key','value') to send a header in the reponse (start custom headers with 'X-' > good practice)
+-req.headers to access the headers object in request object
+-check mdn documentation for list of built-in headers
+
+
+
+
+
+>>>>>STATUS CODES
+
+HTTP response status codes indicate whether a specific HTTP request has been successfully completed. Responses are grouped in five classes:
+-Informational responses (100 – 199)
+-Successful responses (200 – 299)
+-Redirection messages (300 – 399)
+-Client error responses (400 – 499)
+-Server error responses (500 – 599)
+
+commonly used:
+
+-200 OK: The request succeeded. The result meaning of "success" depends on the HTTP method used. (ex for GET the resource was successfully retrieved).
+
+-201 Created: The request succeeded, and a new resource was created as a result. This is typically the response sent after POST or some PUT requests.
+
+-204 No Content: There is no content to send for this request, but the headers may be useful. Used for PATCH and DELETE.
+
+-400 Bad Request: The server cannot or will not process the request due to something that is perceived to be a client error (say mandatory field not provided in form).
+
+-401 Unauthorized: Although the HTTP standard specifies "unauthorized", this response means "unauthenticated", the client must authenticate itself to get the requested response.
+
+-403 Forbidden: The client does not have access rights to the content; that is, it is unauthorized, so the server is refusing to give the requested resource.
+     Unlike 401 Unauthorized, the client's identity is known to the server.
+
+-404 Not Found: The server cannot find the requested resource. In the browser, this means the URL is not recognized.
+     In an API, this can also mean that the endpoint is valid but the resource itself does not exist.
+
+
+NOTE: to set status code to res.status(code).send(or .json)
+example: res.status(204).send('User sucessfully deleted') OR res.status(204).json({message: 'User sucessfully deleted'})
+
+
+
+
+
+
+>>>>>MONGODB
+
+-Documents: The basic unit of data, stored in BSON format (Binary JSON). Each document is like a JSON object with fields and values. [Like an entry in SQL]
+
+-Collections: A group of related documents, similar to a table in relational databases. [like a table in SQL]
+
+-to use mongodb we must enter mongo shell > type in terminal > mongo sh
+
+-to show all availabe databases > show dbs
+
+-to select a certain data base > use <db name>
+
+note: this is also how we create a database, we can do > use <new db name>, mongo will switch, but the actual db will be created when some data is inserted
+
+-to check which data base is currently being used > db
+
+-to see collections in a data base > show collections
+
+-to create a collection we can do db.createCollection()
+
+note: we don't need to explicity create collections either, mongo automatically creates when we insert data
+
+-so we can do db.myCollection.insertOne({ name: "John Doe" }) >  this automatically creates a collection and inserts data
+
+-we can do insertOne({object}) to insert a single object
+
+-we can do insertMany([{object1},{object2},...]) to insert an array of objects
+
+-to find an object we can do > db.collection.find({key:value}) > it returns all documents which match the key value pair
+
+-to find the first object we can do > db.collection.findOne({key:value})
+
+note: an empty find condition matches any/all documents
+
+-both find dunctions take a second arguement called projection whcih specifies which fields to include in the results
+
+-we can specify 0 for exclusion and 1 for inclusion (only use 0 or 1 but not both for a given object with the exception of _id)
+
+examples:
+-db.posts.find({}, {title: 1, date: 1}) > includes only title, date and _id columns (id is included unless explicitly excluded)
+-db.posts.find({}, {_id: 0, title: 1, date: 1}) > includes only title and date columns
+-db.posts.find({}, {category: 0}) > excludes category column
+-db.posts.find({}, {title: 1, date: 0}) > error as we cannot specify inclusion and exclusion for a given object (except _id)
+
+
+-db.posts.updateOne( { title: "Post Title 1" }, { $set: { likes: 2,date: Date() } } ) > update a given document
+
+-db.posts.updateOne( { title: "Post Title 1" }, { $set: { likes: 2,date: Date() } }, {upsert: true} ) > update a given document and insert if not Found
+
+-db.posts.updateMany({}, { $inc: { likes: 1 } }) > updates all documents that match the condition(here it matches all documents)
+
+note: $set is used to set the value, $inc increments the value (in this case by 1)
+
+-db.posts.deleteOne({ title: "Post Title 5" }) > deletes first document that matches
+
+-db.posts.deleteMany({ category: "Technology" }) > deletes all documents that match
+
+>VISIT REFERNCE https://www.w3schools.com/mongodb/mongodb_query_operators.php for mongodb_query_operators
+
+
+
+
+
+
+>>>>>CONNECTING MONGODB AND NODEJS
+
+-install mongoose > npm i mongoose
+
+-mongoose has a schema where we define the structure
+
+-from the schema create a model on which we perform CRUD operations
+
+example:
+
+//connection
+mongoose.connect('mongodb://127.0.0.1:27017/nodelearn4')
+.then(()=>console.log('MongoDb connected!'))
+.catch((err)=>{console.log('Error! '+err)});
+>nodelearn4 is the name of the database. It comes after the IP/hostname (127.0.0.1:27017), which points to a MongoDB instance running locally.
+
+//Schema
+const userSchema=new mongoose.Schema({
+    firstName: {
+        type: String,
+        required: true,
+    },
+    lastName: {
+        type: String,
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+    },
+    jobTitle: {
+        type: String,
+    },
+    gender: {
+        type: String,
+    },
+},{timeseries: true});
+>here we are defining the structure or schema of a document
+
+note: {timeseries: true} is optional and timestamps our documents creation and update
+
+//Collection
+const User=mongoose.model('user',userSchema);
+>here we are creating a collection named user(automatically pluralized to users by mongoose). This users collection is based on the userScheema.
+>this collection is being referred to by the User object allowing us to perform CRUD on the users collection
+
+-CRUD operations are async!!!
+
+>>POST
+
+NOTE: it is normal and good practice for the keys in the req to match the keys in our collection so we can match thme easily
+
+so for example we can do
+
+1>
+User.create(req.body)
+
+instead of 
+
+2>
+User.create({
+    firstName: req.body.first-name,
+    lastName: req.body.last-name,
+    ...so on
+})
+
+>>GET
+
+-to get all simple do User.find({})
+
+-to get one we can do User.findByID(id); (note that User.find(_id:id) will return an array, but User.findOne(_id:id) will work the same as findById)
+
+>>PATCH
+
+-use const updatedUser=User.findByIdAndUpdate(req.params.id,req.body,{new: true, runValidators: true});
+
+-new makes sure updated object is returned to updatedUser, runValidators checks is rules like mandatory and uniqueness are being followed
+
+>>DELETE
+
+-User.findByIdAndDelete(req.params.id);
+
+common and useful qury methods
+-find: Model.find(query) || const users = await User.find({ age: { $gt: 18 } });
+-findOne: Model.findOne(query) || const user = await User.findOne({ email: 'example@example.com' });
+-findById: Model.findById(id) || const user = await User.findById(id);
+-findByIdAndUpdate: Model.findByIdAndUpdate(id, update, options) || const updatedUser = await User.findByIdAndUpdate(id, { age: 30 }, { new: true });
+-findByIdAndDelete: Model.findByIdAndDelete(id) || const deletedUser = await User.findByIdAndDelete(id);
+-findOneAndUpdate: Model.findOneAndUpdate(query, update, options) || const updatedUser = await User.findOneAndUpdate({ email: 'example@example.com' }, { jobTitle: 'Manager' }, { new: true });
+-findOneAndDelete: Model.findOneAndDelete(query) || const deletedUser = await User.findOneAndDelete({ email: 'example@example.com' });
+-countDocuments: Model.countDocuments(query) || const count = await User.countDocuments({ age: { $gt: 18 } });
+-updateMany: Model.updateMany(query, update, options) || const result = await User.updateMany({ jobTitle: 'Intern' }, { jobTitle: 'Employee' });
+-deleteOne: Model.deleteOne(query, options) || const deletedUser=User.deleteOne({ _id: id });
+-deleteMany: Model.deleteMany(query) || const result = await User.deleteMany({ age: { $lt: 18 } });
+-aggregate: Model.aggregate(pipeline) || const results = await User.aggregate([{ $group: { _id: '$jobTitle', count: { $sum: 1 } } }]);
+-distinct: Model.distinct(field, query) || const distinctJobTitles = await User.distinct('jobTitle');
+
+
+
+
+
+
+>>>>>MODEL VIEW CONTROLLER (REFACTORING CODE)
+
+MODELS [require mongoose]> contains our scheema > here we put User model in models>user.js
+
+CONTROLLERS [require models] > contains all functions that handle the various routes and qury the db (DB logic) > here it is in controllers>user.js
+
+ROUTES [require controllers and express] > maps routes to various handlers/controllers > here we put in routes>user.js
+
+VIEWS: Server Side Rendering(SSR) discussed later
+
+note: (we also need to create express.Router() object and use this for paths instead of app in user.js)
+//Usage: app is an instance of the Express application. It is used to set up your entire Express application, including configuring middleware, defining routes, and handling requests.
+//Usage: router is an instance of the Express Router. It is essentially a mini-application that allows you to group related routes together.
+
+note: we can remove common paths in the router and include them in index.js via app.use
+-app.use('/user',userRouter) > we are basically telling express to use userRouter (i.e routes/user.js) for all paths starting with '/user'
+
+CONNECTION: move connection part to connection.js, keep in async function and export this function
+
+MIDDLEWARE: move into middleware?index.js and export the functions
+
+NOTE: NOT ALL FOLDERS NEED TO BE USED ALWAYS, SAY WE HAVE ONLY ONLY MIDDLEWARE, WE CAN DIRECTLY INCLUDE IT IN index.js
+
+
+
+
+
+>>>>>URL shortener app (checkpoint)
+
+-res.redirect(url) redirects ut to the specified url
+
+
+
+
+
+
+
+>>>>>SERVER SIDE RENDERING(SSR)
+
+-set ejs as view engine > app.set('view engine','ejs');
+
+-ejs extends html (i.e .ejs contains html code but can embded js code within it, so it is a 'super' of html)
+
+-use path module > const path=require('path') //in-built, it ensures the path is platform independant (\ in windows, / in unix)
+
+-set location of views folder > app.set('views',path.resolve('./views'));
+
+-now instead of rendering the html in the js files(index/handler/whatever), we hand it off to out ejs file in views
+
+example:
+
+(1)
+app.get('/test',async (req,res)=>{
+    const allUrls=await URL.find({});
+    const html=`
+    <ol>
+        ${allUrls.map((url)=>`<li>${url.shortId} : <a href="${url.redirectURL}" target="_blank">${url.redirectURL}</a> : ${url.visitHistory.length}</li>`).join('')}
+    </ol>
+    `;
+    console.log(html);
+    res.send(html);
+});
+
+
+(2)
+app.get('/test',async (req,res)=>{
+    const allUrls=await URL.find({});
+    res.render('index',{
+        urls:allUrls,
+    })
+});
+
+&&
+
+<ol>
+    <% urls.forEach(url => { %>
+        <li><%= url.shortId %> :<a href="<%= url.redirectURL %>" target="_blank"><%= url.redirectURL %></a></li>
+    <% }) %>
+</ol>
+
+note: in (2) the first line has <% and %> to specify is as js code then we have html into which ejs injects data dynamically (<%= %> tag),
+and then in the last line we have  <% %> again to end the js code
+
+note: res.render() automatically uses views/view engine, don't habe to include it except in index.js
+
+note: in forms, name attribute for input acts as they key in body (and the value as value obviously) so make sure it matches backend key
+
+note: all variables sent to ejs are in an object called locals
+
+
+
+
+
+
+>>>>>AUTHENTICATION
+
+>>>TWO STYPES (statefull,stateless)
+
+-statefull: client sends username/password and server sends a uid which client uses to authenticate themselves.
+
+-thus uid can be based on cookies, response, ir headers. For SSR, well be using cookies for now (although for REST we usually use headers, say for mobile apps, etc)
+
+-Auth middleware checks cookie value and calls next() if valid, and rejects if invalid
+
+-make a new user collection
+
+-create signup and login routes and their static routes(static routes are what the user sees/visits)
+
+-now we need to create actual token system to restrict access
+
+-we can use uuid module in npm to create session ID after sucessful logins
+
+-create auth.js in services folder to map a sessionId to a user (and create map, setUser and getUser functions)
+
+-we are going to use cookies, need to install a package called cookie-parser
+
+-set a cookie with the uid (to allow access to only that user) > res.cookie('uid',sessionId);
+
+-create middleware to authenticate uid > const userId=req.cookie.uid;
+
+-set middleware for url path (only url paths are protexted not signup or login) > syntax: app.use(path,middleware1,middleware2,...,router) 
+
+NOTE: res.cookie for setting, res.cookies for checking (cookie vs cookies)
+
+>>>next task is to make user only see urls generated by them, and also another issue is restarting server clears the map invalidating all cookies (relogin necessary)
+
+-add createdBy field in url schema 
+
+note: 
+In Mongoose, mongoose.Schema.Types.ObjectId and ref are used together to create references between documents in different collections,
+essentially establishing relationships between them (similar to foreign keys in relational databases).
+
+In our case
+-mongoose.Schema.Types.ObjectId > This tells Mongoose that this field will store an ObjectId value.
+(More specifically, Id of a document from users collection)
+
+-ref > This property defines the relationship between the URL and the User collections.
+It tells Mongoose that the createdBy field refers to a document in the users collection.
+(This means the createdBy field in the URL schema is a reference to a specific user,
+and you can later retrieve that user’s data when querying the URL collection.)
+
+-we need asofter middleware for only loading urls generated by a given user
+why? because the way we did the routing, if we use the strict auth middleware with '/' then we won't be able to access login/signup page
+the softer version gives us the user from the cookie (or null if not logged in), but doesn't restrict access to login/signup
+
+
+
+
+
+>>>>>JWT(Json Web Token)
+
+-statefull authentication requires relogin (although this can be fixed by storing it in a db)after evey server restart and it is memory intensive
+(give car keys to valet, they give a tickrt no, and keep a record to map ticket no to car number i.e the state)
+
+-stateless: move the state into the payload,
+(give car keys to valet, they give you a token which contains info about which car is yours, no need to keep a map/state)
+
+1. The client sends login credentials (e.g., username and password) to the server to authenticate.
+
+2. The server checks the credentials.
+If correct, the server generates a JWT token.
+This token contains information like the user's ID and other claims (permissions, expiration time) and is signed using a secret key.
+
+3. The JWT is sent back to the client, which can store it (typically in localStorage or cookies).
+
+4. For subsequent requests, the client sends the JWT as part of the request headers (usually in the Authorization header as Bearer <JWT>).
+
+5. The server checks the token's signature using the secret key. If valid, it decodes the payload to identify the user and proceed with the request.
+If the token is expired or tampered with, the server rejects the request.
+
+i.e the encoded token contains identifying information, so if the token is sent we can identify and authenticate without maintaining a state
+-if we try to alter payload without they key, the jwt changes and it can be identified as tampered
+-if we change with secret key, the verification is accepted (as it means we have generated the token)
+
+-need to install jsonwebtoken module (npm i jsonwebtoken)
+
+
+
+
+
+>>>>>FILE UPLOADING
+
+FORM:
+-form with type="file" to get file
+
+-use a module called multer
+
+-<form action="/upload" method="POST" enctype="multipart/form-data"> (enctype="multipart/form-data" as we are sending file)
+
+ex: 
+    <form action="/upload" method="POST" enctype="multipart/form-data">
+        <input type="file" name="profileImage" id="profileImage">
+        <button type="submit">Upload</button>
+    </form>
+
+-to resolve form data use > app.use(express.urlencoded({extended:false})); 
+
+MULTER:
+
+-import multer > const multer=require('multer')
+
+-create upload instance > const upload=multer({dest:'uploads/'}); (all files are sent to folder specified in dest)
+(upload is a middleware)
+
+- add the middleware > app.post('/upload',upload.single('profileImage'),(req,res)=>{})
+
+-upload.single as we are uploading one file, the name inside is the same as the name specified for the input in the form
+
+-the file gets stored with some random name (to avoid collisions) and without a type
+
+-ex: the png image became a3711b81c2251505a84e8f9018a2a999 > if we rename to a3711b81c2251505a84e8f9018a2a999.png we can  access it
+
+-to get more control over how files are stored on disk, we can use multer.diskstorage
+
+MULTER.DISKSTORAGE:
+
+-we specify destination here rather and then pass it to upload instance
+
+ex:
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '/uploads')
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9)
+    cb(null, file.fieldname + '-' + uniqueSuffix)
+  }
+})
+
+const upload = multer({ storage: storage })
+
+-req is the original req object, file is the uploaded file, cb is the callback to be ececuted after
+
+-in destination we specify where the file should be stored (we have passed error arguement as null in cb)
+
+-in the above example we create a unique suffix of date followed by a rnadom number, and add it to the fieldname(name in form)
+
+-we can also access the originak name as file.originalname
+
+const upload=multer({storage}); > passed storage configuring to upload instance
+
+
+
+
+
+
+
+
+
+
+
