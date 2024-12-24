@@ -1,8 +1,15 @@
 # playsync
 playsync app repo
 
-=>Allows users to sign up, login, create a profile, send and accept friend requests,etc.
-Main purspose is that for a given sport and a given location(using query parameters), allows us to see a table of cyrrently available slots and users in a neat table.
+=>FINAL CODE: PlaySync Source Code Final
+
+=>Allows users to sign up, login, create a profile, send and accept friend requests, upload pfps, player ratings, joining/reserving sports slots for a given sport at a given court for some location (ex: badminton court 1 at MU).
+=>Aain purspose is that for a given sport and a given location(using query parameters), it shows a table of currently available slots and users in a neat, tabular manner..
 This allows users to find new players, form teams, and coordinate their sports activities with felllow comunity members.
 
-=> need to add otp system,  etc... Still work in progress
+=>download files
+=>have nodejs installed
+=?'npm i' to run download node modules
+=>'npm start' to run server (http://localhost:8002/profile by default)
+
+NOTE: This is a progressive web app (can be installed on phones)
