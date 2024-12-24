@@ -9,7 +9,7 @@ This allows users to find new players, form teams, and coordinate their sports a
 
 =>download files
 =>have nodejs installed
-=?'npm i' to run download node modules
-=>'npm start' to run server (http://localhost:8002/profile by default)
+=>'npm i' to download node modules
+=>'npm start' to run server (http://localhost:8002 by default)
 
-NOTE: This is a progressive web app (can be installed on phones)
+NOTE: This is technically a progressive web app i.e can be installed on phones (although with minimal cachin), and thus the CSS/UI is made for mobile devices only
