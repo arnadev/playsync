@@ -1,0 +1,387 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(to bottom, #ffffff, #ac08cd96);
+    color: #002864;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+/* Navbar */
+/* Centered Navbar */
+.navbar {
+  background: linear-gradient(to bottom, #000000, #080808c8);
+  width: 100%;
+    padding: 15px 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 20px; /* Space between items */
+    margin: 0;
+    padding: 0;
+}
+
+.navbar ul li {
+    margin: 0;
+}
+
+.navbar ul li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 300;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+    color: #ffcc00;
+}
+
+/* Welcome Container */
+.container#welcome {
+    margin-top: 80px;
+    text-align: center;
+}
+.container h1 {
+    font-size: 3rem;
+    font-weight: 400;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+/* Start Playing Section */
+#start-playing-div {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.button {
+    --black-700: hsla(0 0% 12% / 1);
+    --border_radius: 9999px;
+    --transtion: 0.3s ease-in-out;
+    --offset: 2px;
+  
+    cursor: pointer;
+    position: relative;
+  
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  
+    transform-origin: center;
+  
+    padding: 1rem 1.8rem;
+    background-color: transparent;
+  
+    border: none;
+    border-radius: var(--border_radius);
+    transform: scale(calc(1 + (var(--active, 0) * 0.1)));
+  
+    transition: transform var(--transtion);
+    opacity: 1;
+    margin-bottom: 23px;
+  }
+  
+  /* Ensure the text remains solid white with no opacity or fade effects */
+  .button .text_button {
+    text-decoration: none; 
+    position: relative;
+    z-index: 10;
+  
+    color: white; /* Ensure text is solid white */
+    background: none; /* Remove background gradient for text */
+    font-size: 1rem;
+    font-weight: 300; /* Optional, for a bolder look */
+  }
+  
+  .button::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  
+    width: 100%;
+    height: 100%;
+    background-color: var(--black-700);
+  
+    border-radius: var(--border_radius);
+    box-shadow: inset 0 0.5px hsl(0, 0%, 100%), inset 0 -1px 2px 0 hsl(0, 0%, 0%),
+      0px 4px 10px -4px hsla(0 0% 0% / calc(1 - var(--active, 0))),
+      0 0 0 calc(var(--active, 0) * 0.1rem) hsla(270, 100%, 61%, 0.75);
+  
+    transition: all var(--transtion);
+    z-index: 0;
+  }
+  
+  .button::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  
+    width: 100%;
+    height: 100%;
+    background-color: #7b3bfcbf;
+    background-image: radial-gradient(
+        at 51% 89%,
+        hsla(266, 45%, 74%, 1) 0px,
+        transparent 50%
+      ),
+      radial-gradient(at 100% 100%, hsla(266, 36%, 60%, 1) 0px, transparent 50%),
+      radial-gradient(at 22% 91%, hsla(266, 36%, 60%, 1) 0px, transparent 50%);
+    background-position: top;
+  
+    opacity: var(--active, 0);
+    border-radius: var(--border_radius);
+    transition: opacity var(--transtion);
+    z-index: 2;
+  }
+  
+  .button:is(:hover, :focus-visible) {
+    --active: 1;
+  }
+  .button:active {
+    transform: scale(1);
+  }
+  
+  .button .dots_border {
+    --size_border: calc(100% + 2px);
+  
+    overflow: hidden;
+  
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  
+    width: var(--size_border);
+    height: var(--size_border);
+    background-color: transparent;
+  
+    border-radius: var(--border_radius);
+    z-index: -10;
+  }
+  
+  .button .dots_border::before {
+    content: "";
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transform-origin: left;
+    transform: rotate(0deg);
+  
+    width: 100%;
+    height: 2rem;
+    background-color: white;
+  
+    mask: linear-gradient(transparent 0%, white 120%);
+    animation: rotate 2s linear infinite;
+  }
+  
+  @keyframes rotate {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .button .sparkle {
+    position: relative;
+    z-index: 10;
+  
+    width: 1.75rem;
+  }
+  
+  .button .sparkle .path {
+    fill: currentColor;
+    stroke: currentColor;
+  
+    transform-origin: center;
+  
+    color: hsl(0, 0%, 100%);
+  }
+  
+  .button:is(:hover, :focus) .sparkle .path {
+    animation: path 1.5s linear 0.5s infinite;
+  }
+  
+  .button .sparkle .path:nth-child(1) {
+    --scale_path_1: 1.2;
+  }
+  .button .sparkle .path:nth-child(2) {
+    --scale_path_2: 1.2;
+  }
+  .button .sparkle .path:nth-child(3) {
+    --scale_path_3: 1.2;
+  }
+  
+  @keyframes path {
+    0%,
+    34%,
+    71%,
+    100% {
+      transform: scale(1);
+    }
+    17% {
+      transform: scale(var(--scale_path_1, 1));
+    }
+    49% {
+      transform: scale(var(--scale_path_2, 1));
+    }
+    83% {
+      transform: scale(var(--scale_path_3, 1));
+    }
+  }
+  
+#start-playing-div a {
+    text-decoration: none;
+  }
+  .flex-container {
+    display: flex;
+    justify-content: space-between; /* Distributes the containers evenly */
+    gap: 20px; /* Adds space between each container */
+    align-items: center;
+    justify-content: center;
+  }
+  /* Parent container holding all cards */
+.flex-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    flex-wrap: wrap; /* Allows wrapping on smaller screens */
+  }
+  
+  /* Individual card style */
+  .card {
+    width: 250px;
+    background-color: white;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.09);
+    padding: 36px;
+    position: relative;
+    overflow: hidden;
+    margin-left: 60px;
+  }
+  
+  /* Circle with number */
+  .circle {
+    width: 96px;
+    height: 96px;
+    background-color: #8d54ef; 
+    border-radius: 50%;
+    position: absolute;
+    top: -28px;
+    right: -28px;
+  }
+  
+  .circle-text {
+    position: absolute;
+    bottom: 24px;
+    left: 28px;
+    color: white;
+    font-size: 24px;
+  }
+  
+  /* Icon css*/
+  .icon {
+    fill: #8c51f3;
+    width: 48px;
+    height: 48px;
+  }
+  
+  /* Title */
+  .title {
+    font-weight: bold;
+    font-size: 1.25rem;
+  }
+  
+  .description {
+    font-size: 0.875rem;
+    color: #6b7280; 
+    line-height: 1.5;
+    margin-top: 12px;
+  }
+  .header-2{
+    font-size: 2rem;
+    font-weight: 300;
+    margin-top: 18px;
+    margin-left: 10px;
+    margin-right: 10px;
+    text-align: center;
+  }
+  .info-1{
+    font-size: 17px;
+    margin-top: 12px;
+    padding-left: 22%;
+    padding-right: 22%;
+    text-align:center;
+  }
+
+button {
+    align-items: center;
+    background-image: linear-gradient(144deg, #af40ff, #5b42f3 50%, #00ddeb);
+    border: 0;
+    border-radius: 8px;
+    box-shadow: rgba(151, 65, 252, 0.2) 0 15px 30px -5px;
+    box-sizing: border-box;
+    color: #ffffff;
+    display: flex;
+    font-size: 16px;
+    justify-content: center;
+    line-height: 1em;
+    max-width: 100%;
+    min-width: 100px;
+    padding: 3px;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.3s;
+    margin-top: 18px;
+  }
+  
+  button:active,
+  button:hover {
+    outline: 0;
+  }
+  
+  button span {
+    background-color: rgb(5, 6, 45);
+    padding: 12px 20px;
+    border-radius: 6px;
+    width: 100%;
+    height: 100%;
+    transition: 300ms;
+  }
+  
+  button:hover span {
+    background: none;
+  }
+  
+  button:active {
+    transform: scale(0.9);
+  }
+  .about-link{
+    text-decoration: none;
+    color: #ffffff;
+  }

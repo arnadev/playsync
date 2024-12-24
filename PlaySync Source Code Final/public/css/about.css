@@ -1,0 +1,122 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    box-sizing: border-box;
+    background: linear-gradient(to bottom, #ffffff, #ac08cd96);
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap; /* Allows for responsive resizing */
+    width: 100vw;
+}
+
+/* Outer container that covers the entire screen */
+.main-container {
+    padding-top: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+
+.image-container {
+    flex: 1;
+    background-image: url('/media/logo-transparent.png');
+    filter: invert();
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    min-height: 400px;
+}
+
+.content-container {
+    padding-top: 10px;
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: left;
+    min-width: 300px; /* Prevents the content from becoming too small */
+}
+
+.content-container h1 {
+    font-family: "Poppins", serif;
+    font-size: 2rem;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.content-container p {
+    font-family: "Poppins", serif;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #555;
+    max-width: 900px;
+    margin-right: 20px;
+    margin-left: 20px;
+}
+
+.content-container h2 {
+    font-family: "Poppins", serif;
+    font-size: 1.8rem;
+    color: #444;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+/* Navbar */
+.navbar {
+    background: linear-gradient(to bottom, #000000, #080808c8);
+    width: 100%;
+padding: 15px 0;
+position: fixed;
+top: 0;
+left: 0;
+box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+display: flex;
+justify-content: center;
+z-index: 1000;
+}
+
+.navbar ul {
+list-style: none;
+display: flex;
+gap: 20px; /* Space between items */
+margin: 0;
+padding: 0;
+}
+
+.navbar ul li {
+margin: 0;
+}
+
+.navbar ul li a {
+color: #fff;
+text-decoration: none;
+font-weight: 200;
+font-size: 1.1rem;
+transition: color 0.3s ease;
+}
+
+.navbar ul li a:hover {
+color: #ffcc00;
+}
+
+
+/* Media Queries for responsiveness */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column; /* Stack the image and text on smaller screens */
+    }
+
+    .image-container {
+        height: 200px; /* Adjust image size for smaller screens */
+    }
+
+    .content-container {
+        text-align: center; /* Center align text on smaller screens */
+    }
+}

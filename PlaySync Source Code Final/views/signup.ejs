@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    
+    <style>
+       * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(to right, #ededed, #7b3bfcd6);
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            height: 100vh;
+        }
+
+        .grey-div {
+            flex: 1 1 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 30px;
+            padding-left: 40px;
+            color: #333;
+        }
+/* Fullscreen Container */
+.fullscreen-container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Login Card */
+.login-card {
+    background: #fff;
+    padding: 40px;
+    width: 100%;
+    max-width: 400px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+}
+        h1 {
+            font-family: 'poppins', sans-serif;
+            font-size: 25px;
+    font-weight: 600;
+    color: #163b8a;
+    margin-bottom: 20px;
+    margin-top: 6px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 10px;
+        }
+
+        label {
+            margin-bottom: 5px;
+            font-weight: 500;
+            text-align: left;
+            font-size: 14px;
+            color: #004aa3;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"],
+        input[type="number"] {
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 14px;
+            color: #333;
+            background: rgba(255, 255, 255, 0.8);
+            outline: none;
+            border: 1px solid #ddd;
+        }
+
+        a {
+            color: #ffcc00;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        .error {
+            color: #ff4d4d;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .login-link {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .login-link a {
+            color: #2575fc;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+#gender-radios-div {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    margin-top: 10px;
+}
+
+
+.btn {
+            padding: 1em 2em;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2.5px;
+            font-weight: 500;
+            color: #ffffff;
+            background-color: #ffa83e;
+            border: none;
+            border-radius: 45px;
+            box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .btn:hover {
+            background-color: #23c483;
+            box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.4);
+            transform: translateY(-7px);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+button {
+    padding: 12px;
+    padding-left: 110px;
+    padding-right: 110px;
+    margin-top: 13px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+/* .btn_data2 {
+    padding: 12px;
+    padding-left: 10px;
+    padding-right: 10px;
+    margin-top: 13px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.btn_data2:hover {
+    background-color: #0056b3;
+} */
+
+
+        .cbx {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            position: relative;
+            border: 2px solid #e8e8eb;
+            background: #e8e8eb;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .cbx:hover {
+            border-color: #0b76ef;
+        }
+
+        .flip {
+            display: block;
+            transition: all 0.4s ease;
+            transform-style: preserve-3d;
+            position: relative;
+            width: 20px;
+            height: 20px;
+        }
+
+        .gender-radios:checked ~ .checkmark .flip {
+            transform: rotateY(180deg);
+        }
+        .gender-radios {
+            display: none; 
+        }
+
+        .front,
+        .back {
+            backface-visibility: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 2px;
+        }
+
+        .front {
+            background: #fff;
+            z-index: 1;
+        }
+
+        .back {
+            transform: rotateY(180deg);
+            background: #0b76ef;
+            text-align: center;
+            color: #fff;
+            line-height: 20px;
+            box-shadow: 0 0 0 1px #0b76ef;
+        }
+
+        .back svg {
+            margin-top: 3px;
+            fill: none;
+        }
+
+        .back svg path {
+            stroke: #fff;
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .checkbox-text {
+            font-size: 14px;
+            color: #333;
+        }
+        .orange-div {
+            flex:  1 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .vector-man1, .vector-man2, .vector-man3 {
+            max-width: 90%;
+            height: auto;
+            margin: 0;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .grey-div {
+                flex: 1 1 auto;
+            }
+
+            .orange-div {
+                flex: 1 1 auto;
+                gap: 5px;
+            }
+        }
+        .vector-man5{
+                width: 140px;
+            }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="grey-div">
+            <div class="fullscreen-container">
+                <div class="login-card">
+                    <img src="/media/logo3.png" alt="Vector 1" class="vector-man5">
+                    <h1>Create a Free Account</h1>
+                    <form method="POST" action="/user/signup">
+                        <div class="form-group">
+                            <label for="username">Full Name</label>
+                            <input type="text" id="username" name="username" required placeholder="Your Full Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required placeholder="Your Email">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required placeholder="Your Password">
+                        </div>
+                        <div class="form-group">
+                            <label for="nickname">Nickname</label>
+                            <input type="text" id="nickname" name="nickname" required placeholder="Your Nickname">
+                        </div>
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" name="age" required placeholder="Your Age">
+                        </div>
+                        <div id="gender-radios-div">
+                            <!-- Male -->
+                            <label for="gender-male" class="cbx">
+                                <input type="radio" id="gender-male" class="gender-radios" name="gender" value="Male" required>
+                                <div class="checkmark">
+                                    <div class="flip">
+                                        <div class="front"></div>
+                                        <div class="back">
+                                            <svg viewBox="0 0 16 14" height="14" width="16">
+                                                <path d="M2 8.5L6 12.5L14 1.5"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="checkbox-text">Male</span>
+                            </label>
+                        
+                            <!-- Female -->
+                            <label for="gender-female" class="cbx">
+                                <input type="radio" id="gender-female" class="gender-radios" name="gender" value="Female" required>
+                                <div class="checkmark">
+                                    <div class="flip">
+                                        <div class="front"></div>
+                                        <div class="back">
+                                            <svg viewBox="0 0 16 14" height="14" width="16">
+                                                <path d="M2 8.5L6 12.5L14 1.5"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="checkbox-text">Female</span>
+                            </label>
+                        
+                            <!-- Other -->
+                            <label for="gender-other" class="cbx">
+                                <input type="radio" id="gender-other" class="gender-radios" name="gender" value="Other" required>
+                                <div class="checkmark">
+                                    <div class="flip">
+                                        <div class="front"></div>
+                                        <div class="back">
+                                            <svg viewBox="0 0 16 14" height="14" width="16">
+                                                <path d="M2 8.5L6 12.5L14 1.5"></path>
+                                            </svg>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span class="checkbox-text">Other</span>
+                            </label>
+                        </div>
+                        <button type="submit" class="btn">Sign Up!</button>
+                    </form>
+                    <p class="login-link">Already have an account? <a href="/login">Login</a></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</body>
+</html>

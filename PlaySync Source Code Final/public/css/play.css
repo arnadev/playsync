@@ -1,0 +1,97 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+body {
+    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    background: linear-gradient(to bottom, #ffffff, #ac08cd96);
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+}
+
+h1 {
+    margin-bottom: 30px;
+    color: #333;
+    font-size: 2em;
+}
+
+.locations {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.location {
+    position: relative;
+    display: block;
+    width: 100vw;
+}
+
+.location-logo {
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    width: 70vw;
+    border-radius: 15px;
+    border: 2px solid transparent;
+}
+
+.location-logo:hover {
+    transform: scale(1.05);
+    border-color: #007bff;
+}
+
+.dropdown-content {
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 0.5s ease, opacity 0.3s ease;
+    background-color: rgb(255, 255, 255,.2);
+    backdrop-filter: blur(10px);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.dropdown-content.active {
+    max-height: 200px; /* Adjust as necessary */
+    opacity: 1;
+}
+
+p {
+    font-size: 1em;
+    line-height: 1.5;
+    color: #333;
+}
+
+.sports{
+    transition: cubic-bezier(0.075, 0.82, 0.165, 1) 1s;
+    width: 100px;
+    animation: breathe 3s infinite ease-in-out;
+}
+
+@keyframes breathe {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+

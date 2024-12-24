@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sleek Table</title>
+    <link rel="stylesheet" href="/css/schedule.css">
+</head>
+<body>
+    <div id="location-sport">
+    <h1 id="location"><%= location %></h1>
+    <h1 id="sport"><%= sport %></h1>
+    </div>
+    <div class="table-container">
+        <table class="sleek-table">
+
+            <thead>
+                <tr>
+                    <th>SLOT</th>
+                    <% for( let index = 0; index < playerCount; index++ ) { %>
+                    <th>PLAYER<%= index + 1 %></th>
+                    <% } %>
+                </tr>
+            </thead>
+
+            <tbody>
+                <% schedule.slots.forEach(slot => { %>
+                <tr>
+                 <td class="times">
+                    <%= slot.time %>
+                    <button class="join-btn" id="<%= slot.time %>">Join</button>
+                </td>
+                 <% for( let index = 0; index < playerCount; index++ ) { %>
+                 <td>
+                    <a href="/profile/<%= slot.players[index] %>"><%= slot.players[index] %></a>
+                 </td>
+                 <% } %>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+    <script src="/js/schedule.js"></script>
+</body>
+</html>
